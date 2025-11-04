@@ -1,5 +1,6 @@
 package services;
 
+import dto.MaletaAFacturarVol;
 import dto.VolRequest;
 import exceptions.AvioNotFoundException;
 import exceptions.VolNotFoundException;
@@ -16,6 +17,7 @@ import io.swagger.annotations.Api;
 import manager.FlightManager;
 import manager.FlightManagerImpl;
 import models.Avio;
+import models.Maleta;
 
 @Api(value = "/flight", description = "Endpoint to Flight Services")
 @Path("/flight")
@@ -44,7 +46,7 @@ public class FlightManagerService {
     @ApiOperation(value = "Añadir o modificar un vol") // <-- SWAGGER
     @ApiResponses(value = { // <-- SWAGGER
             @ApiResponse(code = 201, message = "Vol añadido/modificado", response = VolRequest.class),
-            @ApiResponse(code = 401, message = "Avion no vivo", response = String.class)
+            @ApiResponse(code = 404, message = "Avion no vivo", response = String.class)
 
     })
     @Consumes(MediaType.APPLICATION_JSON) // <-- JERSEY: Le dice que espere un JSON
@@ -57,5 +59,25 @@ public class FlightManagerService {
            return Response.status(404).entity("Error " + e).build();
         }
     }
+
+    @POST // <-- JERSEY: Usamos POST para CREAR un recurso
+    @Path("/facturar") // <-- JERSEY: La URL es el recurso "aviones"
+    @ApiOperation(value = "Añadir o modificar un vol") // <-- SWAGGER
+    @ApiResponses(value = { // <-- SWAGGER
+            @ApiResponse(code = 201, message = "Maleta en la bodega", response = Maleta.class),
+            @ApiResponse(code = 404, message = "Vol no vivo", response = String.class)
+
+    })
+    @Consumes(MediaType.APPLICATION_JSON) // <-- JERSEY: Le dice que espere un JSON
+    @Produces(MediaType.APPLICATION_JSON) // <-- JERSEY: Devuelve un JSON
+    public Response subirMaleta(MaletaAFacturarVol mf) { // <-- ¡PARÁMETRO CLAVE!
+        try{
+            Maleta maleta = fm.subirMaleta(mf);
+            return Response.status(201).entity(maleta).build();
+        }catch (VolNotFoundException e){
+            return Response.status(404).entity("Error " + e).build();
+        }
+    }
+
 
 }

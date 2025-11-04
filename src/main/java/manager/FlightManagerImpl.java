@@ -81,7 +81,7 @@ public class FlightManagerImpl implements FlightManager {
     }
 
     @Override
-    public void subirMaleta(MaletaAFacturarVol mf) {
+    public Maleta subirMaleta(MaletaAFacturarVol mf) {
         // Log de inicio con parámetros
         LOGGER.info("INICIO subirMaleta: MaletaAFacturarVol=" + mf.toString());
 
@@ -93,6 +93,7 @@ public class FlightManagerImpl implements FlightManager {
 
         // Log de fin
         LOGGER.info("FIN subirMaleta");
+        return maletaCrear;
     }
 
     @Override
