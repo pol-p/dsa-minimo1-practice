@@ -1,3 +1,5 @@
+package manager;
+
 import dto.MaletaAFacturarVol;
 import dto.VolBajarMaletas;
 import dto.VolRequest;
@@ -23,12 +25,12 @@ public class FlightManagerImpl implements FlightManager {
         this.listAviones = new HashMap<>();
         this.listVols = new HashMap<>();
         this.contadorMalet = 0;
-        LOGGER.info("FlightManagerImpl (Singleton) creado e inicializado.");
+        LOGGER.info("manager.FlightManagerImpl (Singleton) creado e inicializado.");
     }
 
     public static FlightManager getInstance(){
         if(fm == null){
-            LOGGER.info("Creando nueva instancia de FlightManagerImpl");
+            LOGGER.info("Creando nueva instancia de manager.FlightManagerImpl");
             fm = new FlightManagerImpl();
         }
         return fm;
