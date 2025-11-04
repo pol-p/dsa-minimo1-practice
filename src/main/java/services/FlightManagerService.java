@@ -1,6 +1,7 @@
 package services;
 
 import dto.MaletaAFacturarVol;
+import dto.VolBajarMaletas;
 import dto.VolRequest;
 import exceptions.AvioNotFoundException;
 import exceptions.VolNotFoundException;
@@ -18,6 +19,8 @@ import manager.FlightManager;
 import manager.FlightManagerImpl;
 import models.Avio;
 import models.Maleta;
+
+import java.util.List;
 
 @Api(value = "/flight", description = "Endpoint to Flight Services")
 @Path("/flight")
@@ -78,6 +81,26 @@ public class FlightManagerService {
             return Response.status(404).entity("Error " + e).build();
         }
     }
+//revisar
+    @GET
+    @ApiOperation(value = "Lista de maletas")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = List.class),
+            @ApiResponse(code = 404, message = "Vol no vivo", response = String.class)
+    })
+    @Path("/maletas/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response bajarMaletas(@PathParam("id") Integer id){
+        VolBajarMaletas v = new VolBajarMaletas(id);
+        try{
+            List<Maleta> list = fm.bajarMaletas(v);
+            return Response.status(200).entity(list).build();
+        }catch (VolNotFoundException e){
+            return Response.status(404).entity("Error " + e).build();
+        }
+
+    }
+
 
 
 }
