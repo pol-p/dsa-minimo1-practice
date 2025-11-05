@@ -85,7 +85,7 @@ public class FlightManagerService {
     @GET
     @ApiOperation(value = "Lista de maletas")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = List.class),
+            @ApiResponse(code = 200, message = "OK", response = List.class, responseContainer = "List"),
             @ApiResponse(code = 404, message = "Vol no vivo", response = String.class)
     })
     @Path("/maletas/{id}")
@@ -94,7 +94,8 @@ public class FlightManagerService {
         VolBajarMaletas v = new VolBajarMaletas(id);
         try{
             List<Maleta> list = fm.bajarMaletas(v);
-            return Response.status(200).entity(list).build();
+            GenericEntity<List<Maleta>> entity = new GenericEntity<List<Maleta>>(list) {};
+            return Response.status(200).entity(entity).build();
         }catch (VolNotFoundException e){
             return Response.status(404).entity("Error " + e).build();
         }
